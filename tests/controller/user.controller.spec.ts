@@ -2,6 +2,7 @@ import chai from 'chai'
 import chaiHTTP from 'chai-http'
 import server from '../../src/server'
 import { createDefaultUsers, createOrUpdateTestUser } from '../utils/user-utils'
+import database from '../../src/config/database'
 
 chai.should()
 chai.use(chaiHTTP)
@@ -14,6 +15,7 @@ const NO_USER_AUTH_HEADER = 'Basic YXNidjphc2RqaW8='
 describe('User Controller Tests - /user', function () {
   // Setup the database connection before all tests
   this.beforeAll(async () => {
+    await database.getDatabaseConnection().sync()
     await createDefaultUsers()
   })
 
@@ -215,6 +217,11 @@ describe('User Controller Tests - /user', function () {
 
 describe('User Controller Tests - /self', function () {
   // Setup the database connection before all tests
+  this.beforeAll(async () => {
+    await database.getDatabaseConnection().sync()
+  })
+
+  // Create users before each test
   this.beforeEach(async () => {
     await createDefaultUsers()
   })
