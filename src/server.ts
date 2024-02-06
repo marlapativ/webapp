@@ -33,8 +33,12 @@ routes(app)
 
 // Express Server
 app.listen(port, async () => {
-  const isDatabaseUp = await healthCheckService.databaseHealthCheck()
-  if (isDatabaseUp) database.getDatabaseConnection().sync()
+  try {
+    const isDatabaseUp = await healthCheckService.databaseHealthCheck()
+    if (isDatabaseUp) await database.getDatabaseConnection().sync()
+  } catch (error) {
+    logger.error(`Error while syncing database. Error: ${error}`)
+  }
   logger.info(`Server listening on port ${port}`)
 })
 
