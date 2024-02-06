@@ -3,8 +3,7 @@ import { createDefaultUsers } from './user-utils'
 
 export async function mochaGlobalSetup() {
   try {
-    console.log('Setting up database')
-    database.getDatabaseConnection().sync()
-    createDefaultUsers()
+    await database.getDatabaseConnection().sync()
+    await createDefaultUsers()
   } catch {}
 }
