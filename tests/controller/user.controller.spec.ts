@@ -15,7 +15,7 @@ const NO_USER_AUTH_HEADER = 'Basic YXNidjphc2RqaW8='
 describe('User Controller Tests - /user', function () {
   // Setup the database connection before all tests
   this.beforeAll(async () => {
-    await database.getDatabaseConnection().sync()
+    await database.getDatabaseConnection().sync({ force: true })
     await createDefaultUsers()
   })
 
