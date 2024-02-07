@@ -9,9 +9,7 @@ chai.use(chaiHTTP)
 
 describe('Health Check Controller Tests', function () {
   // Setup the database connection before all tests
-  this.beforeAll(async () => {
-    await database.getDatabaseConnection().sync({ force: true })
-  })
+  this.beforeAll(async () => await database.syncDatabase())
 
   it('should return status 503 on /healthz GET', function (done) {
     // Mocking invalid data connection
