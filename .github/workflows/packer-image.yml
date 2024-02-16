@@ -1,0 +1,109 @@
+name: Packer Custom GCP Image
+
+on:
+  push:
+    branches:
+      - custom-image            # TODO: Change to main once implemented
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest     
+
+    steps:
+      - name: Enable Postgres and create database with user # PostgreSQL service is preinstalled on ubuntu-latest.
+        env:
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          sudo service postgresql start
+          sudo -u postgres psql -c 'CREATE DATABASE "'$DB_NAME'";'
+          sudo -u postgres psql -c "CREATE USER "$DB_USER" WITH PASSWORD '"$DB_PASSWORD"';"
+          sudo -u postgres psql -c 'GRANT ALL PRIVILEGES ON DATABASE "'$DB_NAME'" TO '$DB_USER';'
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 21.6.1
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21.6.1
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint codebase
+        run: npm run lint
+
+      - name: Execute tests
+        run: npm test
+
+      - name: Build source code
+        run: npm run build
+
+      - name: Generate .env file
+        run: echo "PORT=80" > dist/.env   
+
+      - name: Archive production artifacts
+        run: tar -czvf dist.tar.gz dist
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: webapp
+          path: webapp.tar.gz
+          compression-level: 0
+          if-no-files-found: error
+          overwrite: true
+
+  create-image:
+    runs-on: ubuntu-latest
+    needs: test-and-build
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: 'packer'
+
+      - name: Setup gCloud
+        id: auth
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+      
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v2'
+
+      - name: Setup Packer
+        uses: hashicorp/setup-packer@main
+      
+      - name: Packer init
+        id: init
+        run: "packer init ./packer/image.pkr.hcl"
+
+      - name: Packer fmt check
+        id: fmt
+        run: "packer fmt -check ./packer/image.pkr.hcl"
+
+      - name: Packer validate
+        id: validate
+        run: "packer validate ./packer/image.pkr.hcl"
+      
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: webapp
+          path: .
+      
+      - name: Packer build
+        id: build
+        run: "packer build -color=false -on-error=abort ./packer/image.pkr.hcl"
+        env:
+          PACKER_LOG: 1             # TODO: Remove this line once implemented
+
+
