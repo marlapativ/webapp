@@ -1,0 +1,31 @@
+name: Packer validations pipeline
+
+on:
+  pull_request:
+    branches: 
+      - main
+      - a[0-9]                   # CI on a1-a9 assignment branches
+
+jobs:
+  build:
+    runs-on: ubuntu-latest     
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Packer
+        uses: hashicorp/setup-packer@main
+        id: setup
+
+      - name: Packer init
+        id: init
+        run: "packer init ./packer/image.pkr.hcl"
+
+      - name: Packer fmt check
+        id: fmt
+        run: "packer fmt -check ./packer/image.pkr.hcl"
+
+      - name: Packer validate
+        id: validate
+        run: "packer validate -syntax-only ./packer/image.pkr.hcl"    # TODO: Change to "packer validate ./packer/image.pkr.hcl"
