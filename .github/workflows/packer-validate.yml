@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: 
       - main
-      - a[0-9]                   # CI on a1-a9 assignment branches
+      - custom-image                   # CI on testing branch
 
 jobs:
   build:
