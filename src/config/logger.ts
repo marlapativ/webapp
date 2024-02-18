@@ -2,6 +2,8 @@ import winston from 'winston'
 import env from './env'
 import { getUserIdFromContext } from './context'
 
+env.loadEnv()
+
 const { combine, timestamp, printf, align } = winston.format
 const logLevels = {
   fatal: 0,
