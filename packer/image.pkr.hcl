@@ -93,7 +93,7 @@ build {
   provisioner "shell" {
     inline = ["mkdir -p /tmp/setup"]
   }
-  
+
   provisioner "file" {
     source      = "webapp"
     destination = "/tmp/setup/webapp"

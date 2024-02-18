@@ -28,4 +28,4 @@ jobs:
 
       - name: Packer validate
         id: validate
-        run: "packer validate -syntax-only ./packer/image.pkr.hcl"    # TODO: Change to "packer validate ./packer/image.pkr.hcl"
+        run: "packer validate -syntax-only -evaluate-datasources ./packer/image.pkr.hcl"
