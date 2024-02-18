@@ -90,30 +90,30 @@ build {
   sources = ["source.googlecompute.csye6225-webapp-image"]
 
   provisioner "file" {
-    source      = "../webapp"
+    source      = "webapp"
     destination = "/tmp/setup/webapp"
   }
 
   provisioner "file" {
-    source      = "./scripts/systemd/csye6225-webapp.service"
+    source      = "packer/scripts/systemd/csye6225-webapp.service"
     destination = "/tmp/setup/csye6225-webapp.service"
   }
 
   provisioner "file" {
-    source      = "../.env"
+    source      = ".env"
     destination = "/tmp/setup/.env"
   }
 
   provisioner "shell" {
     scripts = [
-      "./scripts/install-dependencies.sh",
-      "./scripts/create-user.sh",
-      "./scripts/allow-port-access.sh",
-      "./scripts/setup-webapp.sh",
-      "./setup-systemd.sh",
+      "packer/scripts/install-dependencies.sh",
+      "packer/scripts/create-user.sh",
+      "packer/scripts/allow-port-access.sh",
+      "packer/scripts/setup-webapp.sh",
+      "packer/scripts/setup-systemd.sh",
       # To setup database
-      "./scripts/db/install-db.sh",
-      "./scripts/db/setup-db.sh",
+      "packer/scripts/db/install-db.sh",
+      "packer/scripts/db/setup-db.sh",
     ]
   }
 }
