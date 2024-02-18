@@ -42,18 +42,11 @@ jobs:
       - name: Build source code
         run: npm run build
 
-      - name: Generate .env file
-        run: echo "PORT=80" > dist/.env   
-
-      - name: Archive production artifacts
-        run: tar -czvf dist.tar.gz dist
-
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: webapp
-          path: webapp.tar.gz
-          compression-level: 0
+          path: dist/
           if-no-files-found: error
           overwrite: true
 
@@ -75,13 +68,13 @@ jobs:
         uses: 'google-github-actions/auth@v2'
         with:
           credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
-      
+
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v2'
 
       - name: Setup Packer
         uses: hashicorp/setup-packer@main
-      
+
       - name: Packer init
         id: init
         run: "packer init ./packer/image.pkr.hcl"
@@ -93,12 +86,20 @@ jobs:
       - name: Packer validate
         id: validate
         run: "packer validate ./packer/image.pkr.hcl"
-      
+
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
           name: webapp
           path: .
+
+      - name: Generate .env file
+        run: |
+          echo "PORT=$PORT" > .env
+          echo "DB_CONN_STRING=$DB_CONN_STRING" >> .env
+        env:
+          PORT: ${{ secrets.WEBAPP_PORT }}
+          DB_CONN_STRING: ${{ secrets.DB_CONN_STRING }}
       
       - name: Packer build
         id: build

@@ -14,7 +14,7 @@ const loadEnv = () => {
  * @returns value of the environment variable or the default value
  */
 const getOrDefault = (key: string, defaultValue: string): string => {
-  if (process.env[key]) {
+  if (key in process.env) {
     return process.env[key] as string
   }
   return defaultValue
