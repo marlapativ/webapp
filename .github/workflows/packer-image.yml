@@ -3,6 +3,7 @@ name: Packer Custom GCP Image
 on:
   push:
     branches:
+      - main
       - custom-image            # TODO: Change to main once implemented
 
 jobs:
