@@ -1,6 +1,6 @@
 [Unit]
 Description=CSYE 6225 Web Application
-ConditionPathExists=/opt/webapp/server.js
+ConditionPathExists=/opt/webapp/dist/server.js
 After=network.target
 
 [Service]
@@ -8,8 +8,8 @@ Type=simple
 User=csye6225
 Group=csye6225
 Environment="NODE_ENV=production"
-WorkingDirectory=/opt/webapp
-ExecStart=/usr/bin/node /opt/webapp/server.js
+WorkingDirectory=/opt/webapp/dist/
+ExecStart=/usr/bin/node /opt/webapp/dist/server.js
 Restart=always
 RestartSec=3
 StandardOutput=syslog
