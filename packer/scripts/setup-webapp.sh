@@ -28,7 +28,7 @@ webapp_dir=${4:-/opt/webapp/}
 echo "Copying webapp & config from $webapp_zip_file to $webapp_dir and setting permissions"
 
 mkdir -p "$webapp_dir"
-unzip -o "$webapp_zip_file" -d "$webapp_dir"
+unzip -q -o "$webapp_zip_file" -d "$webapp_dir"
 cp -f "$webapp_config_file" "$webapp_dir"/dist/
 chown -R "$username":"$username" "$webapp_dir"
 chmod -R 755 "$webapp_dir"
