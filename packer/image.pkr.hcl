@@ -15,6 +15,7 @@ variable "project_id" {
 variable "zone" {
   description = "The zone to deploy to"
   type        = string
+  default     = "us-east1-b"
 }
 
 variable "source_image" {
