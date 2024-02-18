@@ -103,7 +103,7 @@ jobs:
       
       - name: Packer build
         id: build
-        run: "packer build -color=false -on-error=abort -var 'project_id=${{ secrets.GCP_PROJECT_ID }}' ./packer/image.pkr.hcl"
+        run: "packer build -color=false -var 'project_id=${{ secrets.GCP_PROJECT_ID }}' ./packer/image.pkr.hcl"
         env:
           PACKER_LOG: 1             # TODO: Remove this line once implemented
 

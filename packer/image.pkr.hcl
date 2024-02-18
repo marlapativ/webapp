@@ -90,6 +90,10 @@ source "googlecompute" "csye6225-webapp-image" {
 build {
   sources = ["source.googlecompute.csye6225-webapp-image"]
 
+  provisioner "shell" {
+    inline = ["mkdir -p /tmp/setup"]
+  }
+  
   provisioner "file" {
     source      = "webapp"
     destination = "/tmp/setup/webapp"
@@ -106,6 +110,7 @@ build {
   }
 
   provisioner "shell" {
+    execute_command = "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh -eux '{{ .Path }}'"
     scripts = [
       "packer/scripts/install-dependencies.sh",
       "packer/scripts/create-user.sh",
