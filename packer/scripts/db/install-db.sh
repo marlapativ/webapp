@@ -14,7 +14,7 @@ echo "Installing PostgreSQL"
 
 # Install PostgreSQL if not installed
 if ! command -v psql &> /dev/null; then
-    dnf module enable postgresql:16
+    dnf module enable -y postgresql:16
     dnf install -y postgresql-server
     export PGSETUP_INITDB_OPTIONS="--auth-host=trust";
     postgresql-setup initdb

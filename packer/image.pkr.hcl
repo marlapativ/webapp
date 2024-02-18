@@ -110,7 +110,7 @@ build {
   }
 
   provisioner "shell" {
-    execute_command = "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh -eux '{{ .Path }}'"
+    execute_command = "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh -eu '{{ .Path }}'"
     scripts = [
       "packer/scripts/install-dependencies.sh",
       "packer/scripts/create-user.sh",
