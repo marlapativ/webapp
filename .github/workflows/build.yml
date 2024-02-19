@@ -1,10 +1,10 @@
-name: Build Pipeline
+name: webapp build
 
 on:
   pull_request:
     branches: 
       - main
-      - a[0-9]                   # CI on a1-a9 assignment branches
+      - packer                   # CI on test branch
 
 jobs:
   build:
