@@ -1,18 +1,20 @@
-name: Packer validations pipeline
+name: packer validate
 
 on:
   pull_request:
     branches: 
       - main
-      - custom-image                   # CI on testing branch
+      - packer                   # CI on test branch
 
 jobs:
-  build:
+  packer-validate:
     runs-on: ubuntu-latest     
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          sparse-checkout: 'packer'
 
       - name: Set up Packer
         uses: hashicorp/setup-packer@main
