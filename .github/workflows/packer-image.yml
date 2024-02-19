@@ -1,10 +1,10 @@
-name: Packer Custom GCP Image
+name: packer - custom machine image
 
 on:
   push:
     branches:
       - main
-      - custom-image            # TODO: Change to main once implemented
+      - packer            # CI on test branch
 
 jobs:
   test-and-build:
