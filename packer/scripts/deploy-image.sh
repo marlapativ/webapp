@@ -75,7 +75,7 @@ gcloud compute instance-groups managed rolling-action start-update "$group_manag
 echo "Updated the instance group manager: $group_manager_name"
 
 # Wait for the update to complete
-echo "Waiting for the update to complete. Max timeout: 20 minutes"
+echo "Waiting for the update to complete. Max timeout: 30 minutes"
 gcloud compute instance-groups managed wait-until --stable "$group_manager_name" --region "$region_url" \
-    --timeout 1200
+    --timeout 1800
 echo "Update completed successfully"
