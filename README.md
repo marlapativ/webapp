@@ -1,6 +1,6 @@
 # CSYE6225 Web API Server
 
-[![packer - custom machine image](https://github.com/CSYE6225-Cloud-Computing-Organization/webapp/actions/workflows/packer-image.yml/badge.svg)](https://github.com/CSYE6225-Cloud-Computing-Organization/webapp/actions/workflows/packer-image.yml)
+[![packer - custom machine image](https://github.com/Tejamarlapati/webapp/actions/workflows/packer-image.yml/badge.svg)](https://github.com/Tejamarlapati/webapp/actions/workflows/packer-image.yml)
 
 CSYE6225 Web API Server Implementation
 
